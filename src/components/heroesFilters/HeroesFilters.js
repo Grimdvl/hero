@@ -3,8 +3,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
+// import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
 import Spinner from '../spinner/Spinner';
+import { fetchFilters } from '../../actions';
+import { filtersChanged } from './filtersSlice';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -19,10 +21,11 @@ const HeroesFilters = () => {
 
     // Запрос на сервер для получения фильтров и последовательной смены состояния
     useEffect(() => {
-        dispatch(filtersFetching());
-        request("http://localhost:3001/filters")
-            .then(data => dispatch(filtersFetched(data)))
-            .catch(() => dispatch(filtersFetchingError()))
+        dispatch(fetchFilters(request));
+        // dispatch(filtersFetching());
+        // request("http://localhost:3001/filters")
+        //     .then(data => dispatch(filtersFetched(data)))
+        //     .catch(() => dispatch(filtersFetchingError()))
 
         // eslint-disable-next-line
     }, []);
@@ -50,7 +53,8 @@ const HeroesFilters = () => {
                         key={name} 
                         id={name} 
                         className={btnClass}
-                        onClick={() => dispatch(activeFilterChanged(name))}
+                        // onClick={() => dispatch(activeFilterChanged(name))}
+                        onClick={() => dispatch(filtersChanged(name))}
                         >{label}</button>
         })
     }

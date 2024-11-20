@@ -2,21 +2,23 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 
-import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
+// import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
+import { fetchHeroes } from '../../actions';
+import { heroDeleted } from './heroesSlice';
 import Spinner from '../spinner/Spinner';
 
 import './heroesList.scss';
-import heroes from '../../reducers/heroes';
+// import heroes from '../../reducers/heroes';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
 // Усложненная задача:
 // Удаление идет и с json файла при помощи метода DELETE
 
-const HeroesList = (props) => {
+const HeroesList = () => {
     // const someState = useSelector(state => ({
     //     activeFilter: state.filters.activeFilter,
     //     heroes: state.heroes.heroes
@@ -44,15 +46,16 @@ const HeroesList = (props) => {
     // });
     // const {filteredHeroes, heroesLoadingStatus} = useSelector(state => state);
     const filteredHeroes = useSelector(filteredHeroesSelector);
-    const heroesLoadingStatus = useSelector(state => state.heroesLoadingStatus);
+    const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(heroesFetching());
-        request("http://localhost:3001/heroes")
-            .then(data => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()))
+        dispatch(fetchHeroes(request));
+        // dispatch(heroesFetching());
+        // request("http://localhost:3001/heroes")
+        //     .then(data => dispatch(heroesFetched(data)))
+        //     .catch(() => dispatch(heroesFetchingError()))
 
         // eslint-disable-next-line
     }, []);
@@ -64,6 +67,7 @@ const HeroesList = (props) => {
         // Удаление персонажа по его id
         request(`http://localhost:3001/heroes/${id}`, "DELETE")
             .then(data => console.log(data, 'Deleted'))
+            // .then(dispatch(heroDeleted(id)))
             .then(dispatch(heroDeleted(id)))
             .catch(err => console.log(err));
         // eslint-disable-next-line  
