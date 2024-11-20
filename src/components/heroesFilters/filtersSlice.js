@@ -1,3 +1,13 @@
+        // filtersFetching: state => {state.filtersLoadingStatus = 'loading'},
+        // filtersFetched: (state, action) => {
+        //     state.filtersLoadingStatus = 'idle';
+        //     state.filters = action.payload;
+        // },
+        // filtersFetchingError: state => {
+        //     state.filtersLoadingStatus = 'error';
+        // },
+                        // state.filters = action.payload;
+
 import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 import {useHttp} from '../../hooks/http.hook';
 
@@ -14,20 +24,12 @@ export const fetchFilters = createAsyncThunk(
         const {request} = useHttp();
         return request('http://localhost:3001/filters')
     }
-)
+);
 
 const filtersSlice = createSlice({
     name: 'filters',
     initialState,
     reducers: {
-        // filtersFetching: state => {state.filtersLoadingStatus = 'loading'},
-        // filtersFetched: (state, action) => {
-        //     state.filtersLoadingStatus = 'idle';
-        //     state.filters = action.payload;
-        // },
-        // filtersFetchingError: state => {
-        //     state.filtersLoadingStatus = 'error';
-        // },
         filtersChanged: (state, action) => {
             state.activeFilter = action.payload;
         }
@@ -38,7 +40,6 @@ const filtersSlice = createSlice({
             .addCase(fetchFilters.fulfilled, (state, action) => {
                 state.filtersLoadingStatus = 'idle';
                 filtersAdapter.setAll(state, action.payload);
-                // state.filters = action.payload;
             })
             .addCase(fetchFilters.rejected, state => {
                 state.filtersLoadingStatus = 'error';

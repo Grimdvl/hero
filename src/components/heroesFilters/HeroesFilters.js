@@ -1,34 +1,30 @@
 // import {useHttp} from '../../hooks/http.hook';
+// import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
+// import { fetchFilters } from '../../actions';
+        // dispatch(filtersFetching());
+        // request("http://localhost:3001/filters")
+        //     .then(data => dispatch(filtersFetched(data)))
+        //     .catch(() => dispatch(filtersFetchingError()))
+                                // onClick={() => dispatch(activeFilterChanged(name))}
+
+import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import store from '../../store';
 
-// import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
-import Spinner from '../spinner/Spinner';
-// import { fetchFilters } from '../../actions';
 import { filtersChanged, fetchFilters, selectAll } from './filtersSlice';
-
-// Задача для этого компонента:
-// Фильтры должны формироваться на основании загруженных данных
-// Фильтры должны отображать только нужных героев при выборе
-// Активный фильтр имеет класс active
+import Spinner from '../spinner/Spinner';
 
 const HeroesFilters = () => {
 
     const {/*filters,*/ filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const filters = selectAll(store.getState());
-    // const {request} = useHttp();
+    const {request} = useHttp();
 
-    // Запрос на сервер для получения фильтров и последовательной смены состояния
     useEffect(() => {
-        dispatch(fetchFilters(/*request*/));
-        // dispatch(filtersFetching());
-        // request("http://localhost:3001/filters")
-        //     .then(data => dispatch(filtersFetched(data)))
-        //     .catch(() => dispatch(filtersFetchingError()))
-
+        dispatch(fetchFilters(request));
         // eslint-disable-next-line
     }, []);
 
@@ -43,10 +39,8 @@ const HeroesFilters = () => {
             return <h5 className="text-center mt-5">Фильтры не найдены</h5>
         }
 
-        // Данные в json-файле я расширил классами и текстом
         return arr.map(({name, className, label}) => {
 
-            // Используем библиотеку classnames и формируем классы динамически
             const btnClass = classNames('btn', className, {
                 'active': name === activeFilter
             });
@@ -55,7 +49,6 @@ const HeroesFilters = () => {
                         key={name} 
                         id={name} 
                         className={btnClass}
-                        // onClick={() => dispatch(activeFilterChanged(name))}
                         onClick={() => dispatch(filtersChanged(name))}
                         >{label}</button>
         })
