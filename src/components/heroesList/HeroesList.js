@@ -2,12 +2,12 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
-import { createSelector } from '@reduxjs/toolkit';
+// import { createSelector } from '@reduxjs/toolkit';
 
 // import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
-import { fetchHeroes } from '../../actions';
-import { heroDeleted } from './heroesSlice';
+// import { fetchHeroes } from '../../actions';
+import { heroDeleted, fetchHeroes, filteredHeroesSelector } from './heroesSlice';
 import Spinner from '../spinner/Spinner';
 
 import './heroesList.scss';
@@ -23,18 +23,18 @@ const HeroesList = () => {
     //     activeFilter: state.filters.activeFilter,
     //     heroes: state.heroes.heroes
     // }));
-    const filteredHeroesSelector = createSelector(
-        (state) => state.filters.activeFilter,
-        (state) => state.heroes.heroes,
-        (filter, heroes) => {
-            if (filter === 'all') {
-                console.log('render');
-                return heroes;
-            } else {
-                return heroes.filter(item => item.element === filter);
-            }
-        }
-    );
+    // const filteredHeroesSelector = createSelector(
+    //     (state) => state.filters.activeFilter,
+    //     (state) => state.heroes.heroes,
+    //     (filter, heroes) => {
+    //         if (filter === 'all') {
+    //             console.log('render');
+    //             return heroes;
+    //         } else {
+    //             return heroes.filter(item => item.element === filter);
+    //         }
+    //     }
+    // );
 
     // const filteredHeroes = useSelector(state => {
     //     if (state.filters.activeFilter === 'all') {
@@ -51,7 +51,7 @@ const HeroesList = () => {
     const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(fetchHeroes(request));
+        dispatch(fetchHeroes(/*request*/));
         // dispatch(heroesFetching());
         // request("http://localhost:3001/heroes")
         //     .then(data => dispatch(heroesFetched(data)))

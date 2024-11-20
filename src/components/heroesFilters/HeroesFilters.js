@@ -1,12 +1,13 @@
-import {useHttp} from '../../hooks/http.hook';
+// import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import store from '../../store';
 
 // import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
 import Spinner from '../spinner/Spinner';
-import { fetchFilters } from '../../actions';
-import { filtersChanged } from './filtersSlice';
+// import { fetchFilters } from '../../actions';
+import { filtersChanged, fetchFilters, selectAll } from './filtersSlice';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -15,13 +16,14 @@ import { filtersChanged } from './filtersSlice';
 
 const HeroesFilters = () => {
 
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
+    const {/*filters,*/ filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
-    const {request} = useHttp();
+    const filters = selectAll(store.getState());
+    // const {request} = useHttp();
 
     // Запрос на сервер для получения фильтров и последовательной смены состояния
     useEffect(() => {
-        dispatch(fetchFilters(request));
+        dispatch(fetchFilters(/*request*/));
         // dispatch(filtersFetching());
         // request("http://localhost:3001/filters")
         //     .then(data => dispatch(filtersFetched(data)))
