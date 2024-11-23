@@ -104,7 +104,7 @@ const HeroesAddForm = () => {
 
             <button type="submit" className="btn btn-primary">Создать</button>
         </form>
-    )
+    );
 }
 
 export default HeroesAddForm;
