@@ -46,4 +46,5 @@ const HeroesListItem = ({ name, description, element, onDelete }) => {
 	);
 };
 
+
 export default HeroesListItem;
