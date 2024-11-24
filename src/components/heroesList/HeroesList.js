@@ -63,7 +63,7 @@ import { useGetHeroesQuery, useDeleteHeroMutation } from '../../api/apiSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
-import './heroesList.scss';
+import './heroesList.css';
 
 const HeroesList = () => {
     const {
